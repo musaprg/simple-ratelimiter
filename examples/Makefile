@@ -10,10 +10,6 @@ build:
 run: build
 	./$(TARGET)
 
-.PHONY: load-test
-load-test:
-	scripts/run_test.sh
-
 .PHONY: clean
 clean:
 	go clean

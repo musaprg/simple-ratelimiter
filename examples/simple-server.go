@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+    srl "github.com/musaprg/simple-ratelimiter"
 )
 
 var (
@@ -28,7 +30,7 @@ func init() {
 	flag.Parse()
 
 	// Initialize RateLimiter middleware
-	InitRateLimiter(allowRequestPerSecond)
+	srl.InitRateLimiter(allowRequestPerSecond)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +44,7 @@ func main() {
 
 	router := http.NewServeMux()
 	router.HandleFunc("/", handler)
-	if err := http.ListenAndServe(addr, RateLimitMiddleware(router)); err != nil {
+	if err := http.ListenAndServe(addr, srl.RateLimitMiddleware(router)); err != nil {
 		log.Panicf("[FAILED] an error has occured at starting server: %v", err)
 	}
 }
