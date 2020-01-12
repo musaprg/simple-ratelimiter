@@ -18,27 +18,27 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-type RateLimiter struct {
+type rateLimiter struct {
 	mux                    sync.Mutex
 	allowRequestsPerSecond int
 	requestTimeQueue       []time.Time
 }
 
-var instance *RateLimiter
+var instance *rateLimiter
 
 func InitRateLimiter(allowRequestPerSecond int) {
-	instance = &RateLimiter{}
+	instance = &rateLimiter{}
 	instance.allowRequestsPerSecond = allowRequestPerSecond
 }
 
-func GetRateLimiter() *RateLimiter {
+func GetRateLimiter() *rateLimiter {
 	if instance == nil {
-		instance = &RateLimiter{}
+		instance = &rateLimiter{}
 	}
 	return instance
 }
 
-func (rt *RateLimiter) cleanQueue() {
+func (rt *rateLimiter) cleanQueue() {
 	ct := time.Now()
 
 	for len(rt.requestTimeQueue) > 0 {
@@ -53,7 +53,7 @@ func (rt *RateLimiter) cleanQueue() {
 	}
 }
 
-func (rt *RateLimiter) RateLimit(r *http.Request) bool {
+func (rt *rateLimiter) RateLimit(r *http.Request) bool {
 	rt.mux.Lock()
 	defer rt.mux.Unlock()
 
