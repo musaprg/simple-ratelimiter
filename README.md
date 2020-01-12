@@ -1,5 +1,5 @@
 # simple-ratelimiter
-An simple ratelimit middleware.
+A simple ratelimit middleware.
 
 ## Simple example
 You can simply try the ratelimiter in a simple sample program.
