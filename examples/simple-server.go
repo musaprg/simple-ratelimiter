@@ -45,6 +45,6 @@ func main() {
 	router := http.NewServeMux()
 	router.HandleFunc("/", handler)
 	if err := http.ListenAndServe(addr, srl.RateLimitMiddleware(router)); err != nil {
-		log.Panicf("[FAILED] an error has occured at starting server: %v", err)
+		log.Panicf("[FAILED] an error has occurred at starting server: %v", err)
 	}
 }
