@@ -41,14 +41,11 @@ func GetRateLimiter() *SimpleRateLimiter {
 func (rt *SimpleRateLimiter) cleanQueue() {
 	ct := time.Now()
 
-	rt.mux.Lock()
-	defer rt.mux.Unlock()
-
 	for len(rt.requestTimeQueue) > 0 {
 		v := rt.requestTimeQueue[0]
 
-		d := int(math.Abs(v.Sub(ct).Seconds()))
-		if d < 1 {
+		d := math.Abs(v.Sub(ct).Seconds())
+		if d < 1.0 {
 			break
 		}
 
@@ -57,19 +54,13 @@ func (rt *SimpleRateLimiter) cleanQueue() {
 }
 
 func (rt *SimpleRateLimiter) RateLimit(r *http.Request) bool {
-	rt.cleanQueue()
-
 	rt.mux.Lock()
 	defer rt.mux.Unlock()
 
-	//log.Println(len(rt.requestTimeQueue))
-	//log.Println(rt.requestTimeQueue)
+	rt.cleanQueue()
 
-	if l := len(rt.requestTimeQueue); l > 0 {
-		count := l + 1
-		if count > rt.allowRequestsPerSecond {
-			return false
-		}
+	if len(rt.requestTimeQueue)+1 > rt.allowRequestsPerSecond {
+		return false
 	}
 
 	rt.requestTimeQueue = append(rt.requestTimeQueue, time.Now())
