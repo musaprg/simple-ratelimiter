@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// A middleware of rate limiting.
+// RateLimitMiddleware is a middleware to perform rate limiting.
 func RateLimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if GetRateLimiter().RateLimit(r) {
