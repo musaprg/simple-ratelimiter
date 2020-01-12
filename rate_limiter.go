@@ -1,6 +1,7 @@
 package ratelimiter
 
 import (
+	"log"
 	"math"
 	"net/http"
 	"sync"
@@ -35,7 +36,7 @@ func InitRateLimiter(allowRequestPerSecond int) {
 
 func getRateLimiter() *rateLimiter {
 	if instance == nil {
-		instance = &rateLimiter{}
+		log.Panicln("[FAILED] You must initialize with InitRateLimiter before use.")
 	}
 	return instance
 }
