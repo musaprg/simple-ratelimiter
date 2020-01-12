@@ -10,7 +10,7 @@ import (
 // RateLimitMiddleware is a middleware to perform rate limiting.
 func RateLimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if GetRateLimiter().RateLimit(r) {
+		if getRateLimiter().RateLimit(r) {
 			// Continue
 			next.ServeHTTP(w, r)
 		} else {
@@ -33,8 +33,7 @@ func InitRateLimiter(allowRequestPerSecond int) {
 	instance.allowRequestsPerSecond = allowRequestPerSecond
 }
 
-// GetRateLimiter returns the instance of RateLimiter
-func GetRateLimiter() *rateLimiter {
+func getRateLimiter() *rateLimiter {
 	if instance == nil {
 		instance = &rateLimiter{}
 	}
