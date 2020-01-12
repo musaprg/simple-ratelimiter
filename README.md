@@ -20,7 +20,7 @@ To run a sample server, execute the command below.
 
 ```
 cd examples
-./simple-ratelimiter
+./simple-server
 ```
 
 The server will be served at localhost:3000.
@@ -31,5 +31,5 @@ For example, you can limit to 100 per second,
 
 ```
 cd examples
-./simple-ratelimiter --limit 100
+./simple-server --limit 100
 ```
