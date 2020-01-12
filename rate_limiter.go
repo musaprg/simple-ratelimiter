@@ -1,4 +1,4 @@
-package main
+package ratelimiter
 
 import (
 	"math"
@@ -18,27 +18,27 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-type SimpleRateLimiter struct {
+type RateLimiter struct {
 	mux                    sync.Mutex
 	allowRequestsPerSecond int
 	requestTimeQueue       []time.Time
 }
 
-var instance *SimpleRateLimiter
+var instance *RateLimiter
 
 func InitRateLimiter(allowRequestPerSecond int) {
-	instance = &SimpleRateLimiter{}
+	instance = &RateLimiter{}
 	instance.allowRequestsPerSecond = allowRequestPerSecond
 }
 
-func GetRateLimiter() *SimpleRateLimiter {
+func GetRateLimiter() *RateLimiter {
 	if instance == nil {
-		instance = &SimpleRateLimiter{}
+		instance = &RateLimiter{}
 	}
 	return instance
 }
 
-func (rt *SimpleRateLimiter) cleanQueue() {
+func (rt *RateLimiter) cleanQueue() {
 	ct := time.Now()
 
 	for len(rt.requestTimeQueue) > 0 {
@@ -53,7 +53,7 @@ func (rt *SimpleRateLimiter) cleanQueue() {
 	}
 }
 
-func (rt *SimpleRateLimiter) RateLimit(r *http.Request) bool {
+func (rt *RateLimiter) RateLimit(r *http.Request) bool {
 	rt.mux.Lock()
 	defer rt.mux.Unlock()
 
