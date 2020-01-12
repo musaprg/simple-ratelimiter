@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// A middleware of rate limiting.
 func RateLimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if GetRateLimiter().RateLimit(r) {
@@ -26,11 +27,13 @@ type rateLimiter struct {
 
 var instance *rateLimiter
 
+// InitRateLimiter initialize singleton instance of RateLimiter
 func InitRateLimiter(allowRequestPerSecond int) {
 	instance = &rateLimiter{}
 	instance.allowRequestsPerSecond = allowRequestPerSecond
 }
 
+// GetRateLimiter returns the instance of RateLimiter
 func GetRateLimiter() *rateLimiter {
 	if instance == nil {
 		instance = &rateLimiter{}
@@ -53,6 +56,7 @@ func (rt *rateLimiter) cleanQueue() {
 	}
 }
 
+// RateLimit returns boolean value whether an incoming request is allowed.
 func (rt *rateLimiter) RateLimit(r *http.Request) bool {
 	rt.mux.Lock()
 	defer rt.mux.Unlock()
