@@ -11,6 +11,7 @@ If the number of requests has reached the limit, it returns 409 (Too Many Reques
 
 ### How to build
 ```
+cd examples
 make
 ```
 
@@ -18,6 +19,7 @@ make
 To run a sample server, execute the command below.
 
 ```
+cd examples
 ./simple-ratelimiter
 ```
 
@@ -28,5 +30,6 @@ If you want to limit the number of requests allowed per second, you can configur
 For example, you can limit to 100 per second,
 
 ```
+cd examples
 ./simple-ratelimiter --limit 100
 ```
