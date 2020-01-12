@@ -1,4 +1,4 @@
-TARGET=simple-ratelimiter
+TARGET=simple-server
 
 all: build
 
@@ -12,5 +12,5 @@ run: build
 
 .PHONY: clean
 clean:
-	go clean
+	rm $(TARGET)
 
